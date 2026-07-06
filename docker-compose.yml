@@ -1,0 +1,151 @@
+  services:
+    minio:
+      image: minio/minio:latest
+      ports:
+        - "9000:9000"
+        - "9001:9001"
+      environment:
+        MINIO_ROOT_USER: minioadmin
+        MINIO_ROOT_PASSWORD: minioadmin
+      command: server /data --console-address ":9001"
+      volumes:
+        - minio_data:/data
+      networks:
+        - pipeline-net
+
+    postgres:
+      image: postgres:15
+      ports:
+        - "5432:5432"
+      environment:
+        POSTGRES_USER: airflow
+        POSTGRES_PASSWORD: airflow
+        POSTGRES_DB: airflow
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U airflow -d airflow"]
+        interval: 5s
+        retries: 5
+      networks:
+      - pipeline-net
+
+    airflow-init:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      environment:
+        AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql://airflow:airflow@postgres:5432/airflow
+        AIRFLOW__CORE__FERNET_KEY: "Q2Sovb1Db2F-qxNlRt0c79h45264bJVQM0hRbytZ_kw="
+      depends_on:
+        postgres:
+          condition: service_healthy
+      command: >
+        bash -c "airflow db migrate"
+      networks:
+      - pipeline-net
+    
+    airflow-apiserver:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      ports:
+        - "8080:8080"
+      environment:
+        AIRFLOW__API_AUTH__JWT_SECRET: "yA3UF8Xw6Iwc4jZw3NLM2g=="
+        AIRFLOW__API__SECRET_KEY: "yA3UF8Xw6Iwc4jZw3NLM2g=="
+        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql://airflow:airflow@postgres:5432/airflow
+        AIRFLOW__CORE__EXECUTOR: LocalExecutor
+        AIRFLOW__CORE__EXECUTION_API_SERVER_URL: "http://airflow-apiserver:8080/execution/"
+        AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS: "admin:admin"
+        AIRFLOW__CORE__FERNET_KEY: "Q2Sovb1Db2F-qxNlRt0c79h45264bJVQM0hRbytZ_kw="
+        AIRFLOW_CONN_MINIO_DEFAULT: "aws://minioadmin:minioadmin@/?endpoint_url=http%3A%2F%2Fminio%3A9000"
+      depends_on:
+        - airflow-init
+      volumes:
+        - airflow_logs:/opt/airflow/logs
+        - ./dags:/opt/airflow/dags
+        - ~/.ssh/airflow_spark_key:/opt/airflow/ssh/airflow_spark_key:ro
+        - ~/.ssh/known_hosts_for_airflow:/opt/airflow/ssh/known_hosts:ro
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
+      command:
+        - bash
+        - -c
+        - >
+          echo '{"admin": "admin"}' > /opt/airflow/simple_auth_manager_passwords.json.generated &&
+          exec airflow api-server
+      networks:
+      - pipeline-net
+
+    airflow-scheduler:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      environment:
+        AIRFLOW__API_AUTH__JWT_SECRET: "yA3UF8Xw6Iwc4jZw3NLM2g=="
+        AIRFLOW__API__SECRET_KEY: "yA3UF8Xw6Iwc4jZw3NLM2g=="
+        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql://airflow:airflow@postgres:5432/airflow
+        AIRFLOW__CORE__EXECUTOR: LocalExecutor
+        AIRFLOW__CORE__EXECUTION_API_SERVER_URL: "http://airflow-apiserver:8080/execution/"
+        AIRFLOW__CORE__FERNET_KEY: "Q2Sovb1Db2F-qxNlRt0c79h45264bJVQM0hRbytZ_kw="
+        AIRFLOW_CONN_MINIO_DEFAULT: "aws://minioadmin:minioadmin@/?endpoint_url=http%3A%2F%2Fminio%3A9000"
+      depends_on:
+        - airflow-init
+      volumes:
+        - airflow_logs:/opt/airflow/logs
+        - ./dags:/opt/airflow/dags
+        - ~/.ssh/airflow_spark_key:/opt/airflow/ssh/airflow_spark_key:ro
+        - ~/.ssh/known_hosts_for_airflow:/opt/airflow/ssh/known_hosts:ro
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
+      command: scheduler
+      networks:
+      - pipeline-net
+
+    airflow-dag-processor:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      environment:
+        AIRFLOW__API_AUTH__JWT_SECRET: "yA3UF8Xw6Iwc4jZw3NLM2g=="
+        AIRFLOW__API__SECRET_KEY: "yA3UF8Xw6Iwc4jZw3NLM2g=="
+        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql://airflow:airflow@postgres:5432/airflow
+        AIRFLOW__CORE__EXECUTOR: LocalExecutor
+        AIRFLOW__CORE__EXECUTION_API_SERVER_URL: "http://airflow-apiserver:8080/execution/"
+        AIRFLOW__CORE__FERNET_KEY: "Q2Sovb1Db2F-qxNlRt0c79h45264bJVQM0hRbytZ_kw="
+        AIRFLOW_CONN_MINIO_DEFAULT: "aws://minioadmin:minioadmin@/?endpoint_url=http%3A%2F%2Fminio%3A9000"
+      depends_on:
+        - airflow-init
+      volumes:
+        - airflow_logs:/opt/airflow/logs
+        - ./dags:/opt/airflow/dags
+        - ~/.ssh/airflow_spark_key:/opt/airflow/ssh/airflow_spark_key:ro
+        - ~/.ssh/known_hosts_for_airflow:/opt/airflow/ssh/known_hosts:ro
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
+      command: dag-processor
+      networks:
+      - pipeline-net  
+
+    clickhouse:
+      image: clickhouse/clickhouse-server:latest
+      ports:
+        - "8123:8123"
+        - "9002:9000"
+      environment:
+        CLICKHOUSE_PASSWORD: clickhouse
+      volumes:
+        - clickhouse_data:/var/lib/clickhouse
+      networks:
+      - pipeline-net
+
+  volumes:
+    minio_data:
+    postgres_data:
+    airflow_logs:
+    clickhouse_data:
+
+  networks:
+    pipeline-net:
+      driver: bridge  

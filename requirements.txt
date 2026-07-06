@@ -1,0 +1,6 @@
+requests==2.34.2
+pyarrow==24.0.0
+apache-airflow-providers-amazon
+apache-airflow-providers-ssh
+xmltodict
+airflow-clickhouse-plugin
