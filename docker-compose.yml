@@ -28,11 +28,11 @@
         interval: 5s
         retries: 5
       networks:
-      - pipeline-net
+        - pipeline-net
 
     airflow-init:
       build:
-        context: .
+        context: ./airflow
         dockerfile: Dockerfile
       environment:
         AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql://airflow:airflow@postgres:5432/airflow
@@ -43,11 +43,11 @@
       command: >
         bash -c "airflow db migrate"
       networks:
-      - pipeline-net
+        - pipeline-net
     
     airflow-apiserver:
       build:
-        context: .
+        context: ./airflow
         dockerfile: Dockerfile
       ports:
         - "8080:8080"
@@ -76,11 +76,11 @@
           echo '{"admin": "admin"}' > /opt/airflow/simple_auth_manager_passwords.json.generated &&
           exec airflow api-server
       networks:
-      - pipeline-net
+        - pipeline-net
 
     airflow-scheduler:
       build:
-        context: .
+        context: ./airflow
         dockerfile: Dockerfile
       environment:
         AIRFLOW__API_AUTH__JWT_SECRET: "yA3UF8Xw6Iwc4jZw3NLM2g=="
@@ -101,11 +101,11 @@
         - "host.docker.internal:host-gateway"
       command: scheduler
       networks:
-      - pipeline-net
+        - pipeline-net
 
     airflow-dag-processor:
       build:
-        context: .
+        context: ./airflow
         dockerfile: Dockerfile
       environment:
         AIRFLOW__API_AUTH__JWT_SECRET: "yA3UF8Xw6Iwc4jZw3NLM2g=="
@@ -126,7 +126,7 @@
         - "host.docker.internal:host-gateway"
       command: dag-processor
       networks:
-      - pipeline-net  
+        - pipeline-net  
 
     clickhouse:
       image: clickhouse/clickhouse-server:latest
@@ -138,7 +138,18 @@
       volumes:
         - clickhouse_data:/var/lib/clickhouse
       networks:
-      - pipeline-net
+        - pipeline-net
+
+    dbt:
+      build:
+        context: ./dbt
+        dockerfile: Dockerfile
+      # depends_on:
+        # - clickhouse
+      volumes:
+        - ./dbt/project:/dbt
+      networks:
+        - pipeline-net
 
   volumes:
     minio_data:
