@@ -144,6 +144,12 @@
       build:
         context: ./dbt
         dockerfile: Dockerfile
+      environment:
+        DBT_POSTGRES_HOST: postgres
+        DBT_POSTGRES_PORT: ${DWH_PORT}
+        DBT_POSTGRES_DB: ${DWH_DBNAME}
+        DBT_POSTGRES_USER: ${DWH_USER}
+        DBT_POSTGRES_PASSWORD: ${DWH_PASSWORD}
       # depends_on:
         # - clickhouse
       volumes:
