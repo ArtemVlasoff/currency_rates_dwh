@@ -1,0 +1,12 @@
+cbr_marts:
+  target: dev
+  outputs:
+    dev:
+      type: clickhouse
+      host: clickhouse
+      port: 8123
+      driver: http
+      user: default
+      password: clickhouse
+      schema: mart
+      secure: false

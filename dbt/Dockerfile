@@ -1,8 +1,8 @@
 FROM python:3.11-slim
 
-WORKDIR /dbt
+WORKDIR /dbt/project/cbr_marts
 
 COPY requirements.txt /requirements.txt
-RUN pip install --no-cache-dir --user -r /requirements.txt
+RUN pip install --no-cache-dir -r /requirements.txt
 
 CMD ["sleep", "infinity"]

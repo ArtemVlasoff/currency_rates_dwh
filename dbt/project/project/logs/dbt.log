@@ -1,0 +1,66 @@
+[0m08:20:02.898358 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x74b7b84fb250>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x74b7b55c8490>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x74b7b55c9ed0>]}
+
+
+============================== 08:20:02.907369 | a9f03cfc-cccb-414e-b0bc-0295f5f8da8f ==============================
+[0m08:20:02.907369 [info ] [MainThread]: Running with dbt=1.11.12
+[0m08:20:02.908331 [debug] [MainThread]: running dbt with arguments {'write_json': 'True', 'version_check': 'True', 'log_path': 'logs', 'cache_selected_only': 'False', 'target_path': 'None', 'printer_width': '80', 'profiles_dir': '/root/.dbt', 'log_format': 'default', 'log_cache_events': 'False', 'warn_error': 'None', 'introspect': 'True', 'static_parser': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'debug': 'False', 'use_colors': 'True', 'send_anonymous_usage_stats': 'True', 'invocation_command': 'dbt debug', 'quiet': 'False', 'use_experimental_parser': 'False', 'fail_fast': 'False', 'partial_parse': 'True', 'no_print': 'None', 'indirect_selection': 'eager', 'empty': 'None'}
+[0m08:20:02.926969 [info ] [MainThread]: dbt version: 1.11.12
+[0m08:20:02.927728 [info ] [MainThread]: python version: 3.11.15
+[0m08:20:02.928321 [info ] [MainThread]: python path: /usr/local/bin/python3.11
+[0m08:20:02.928848 [info ] [MainThread]: os info: Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.41
+[0m08:20:03.020262 [info ] [MainThread]: Using profiles dir at /root/.dbt
+[0m08:20:03.020853 [info ] [MainThread]: Using profiles.yml file at /root/.dbt/profiles.yml
+[0m08:20:03.021331 [info ] [MainThread]: Using dbt_project.yml file at /dbt/project/dbt_project.yml
+[0m08:20:03.022098 [info ] [MainThread]: adapter type: clickhouse
+[0m08:20:03.022595 [info ] [MainThread]: adapter version: 1.10.1
+[0m08:20:03.022997 [info ] [MainThread]: Configuration:
+[0m08:20:03.023473 [info ] [MainThread]:   profiles.yml file [[32mOK found and valid[0m]
+[0m08:20:03.023926 [info ] [MainThread]:   dbt_project.yml file [[31mERROR not found[0m]
+[0m08:20:03.024474 [info ] [MainThread]: Required dependencies:
+[0m08:20:03.024982 [debug] [MainThread]: Executing "git --help"
+[0m08:20:03.026631 [info ] [MainThread]:  - git [[31mERROR[0m]
+
+[0m08:20:03.027233 [info ] [MainThread]: Connection:
+[0m08:20:03.027674 [info ] [MainThread]:   driver: http
+[0m08:20:03.028073 [info ] [MainThread]:   host: clickhouse
+[0m08:20:03.028498 [info ] [MainThread]:   port: 8123
+[0m08:20:03.028913 [info ] [MainThread]:   user: default
+[0m08:20:03.029376 [info ] [MainThread]:   schema: mart
+[0m08:20:03.029838 [info ] [MainThread]:   retries: 1
+[0m08:20:03.030846 [info ] [MainThread]:   cluster: None
+[0m08:20:03.031513 [info ] [MainThread]:   database_engine: None
+[0m08:20:03.031963 [info ] [MainThread]:   cluster_mode: False
+[0m08:20:03.032425 [info ] [MainThread]:   secure: False
+[0m08:20:03.032769 [info ] [MainThread]:   verify: True
+[0m08:20:03.033134 [info ] [MainThread]:   client_cert: None
+[0m08:20:03.033586 [info ] [MainThread]:   client_cert_key: None
+[0m08:20:03.034043 [info ] [MainThread]:   connect_timeout: 10
+[0m08:20:03.034623 [info ] [MainThread]:   send_receive_timeout: 300
+[0m08:20:03.035021 [info ] [MainThread]:   sync_request_timeout: 5
+[0m08:20:03.035455 [info ] [MainThread]:   compress_block_size: 1048576
+[0m08:20:03.035876 [info ] [MainThread]:   compression: 
+[0m08:20:03.036346 [info ] [MainThread]:   check_exchange: True
+[0m08:20:03.036722 [info ] [MainThread]:   custom_settings: None
+[0m08:20:03.037045 [info ] [MainThread]:   use_lw_deletes: False
+[0m08:20:03.037500 [info ] [MainThread]:   allow_automatic_deduplication: False
+[0m08:20:03.037901 [info ] [MainThread]:   tcp_keepalive: False
+[0m08:20:03.038597 [info ] [MainThread]: Registered adapter: clickhouse=1.10.1
+[0m08:20:03.180776 [debug] [MainThread]: Acquiring new clickhouse connection 'debug'
+[0m08:20:03.181263 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m08:20:03.322739 [debug] [MainThread]: dbt_clickhouse adapter: On debug: select 1 as id...
+[0m08:20:03.326921 [debug] [MainThread]: dbt_clickhouse adapter: SQL status: OK in 0.00 seconds
+[0m08:20:03.376123 [info ] [MainThread]:   Connection test: [[32mOK connection ok[0m]
+
+[0m08:20:03.376841 [info ] [MainThread]: [31m2 checks failed:[0m
+[0m08:20:03.377711 [info ] [MainThread]: Project loading failed for the following reason:
+ project path </dbt/project/dbt_project.yml> not found
+
+[0m08:20:03.378390 [info ] [MainThread]: Error from git --help: Could not find command, ensure it is in the user's PATH: "git"
+
+[0m08:20:03.380015 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_success": false, "command_wall_clock_time": 0.5768625, "process_in_blocks": "0", "process_kernel_time": 0.650629, "process_mem_max_rss": "114980", "process_out_blocks": "2240", "process_user_time": 2.319115}
+[0m08:20:03.380883 [debug] [MainThread]: Command `dbt debug` failed at 08:20:03.380710 after 0.58 seconds
+[0m08:20:03.381439 [debug] [MainThread]: Connection 'debug' was left open.
+[0m08:20:03.381907 [debug] [MainThread]: On debug: Close
+[0m08:20:03.382627 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x74b7b55c8490>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x74b7b55ca050>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x74b7b559da50>]}
+[0m08:20:03.383256 [debug] [MainThread]: Flushing usage events
+[0m08:20:04.107693 [debug] [MainThread]: An error was encountered while trying to flush usage events

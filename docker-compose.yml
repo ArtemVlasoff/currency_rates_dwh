@@ -148,6 +148,7 @@
         # - clickhouse
       volumes:
         - ./dbt/project:/dbt
+        - ./dbt/dbt_profile:/root/.dbt
       networks:
         - pipeline-net
 

@@ -1,0 +1,66 @@
+[0m08:22:13.397652 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d832dbc3c50>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d832dbc3610>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d832db8d810>]}
+
+
+============================== 08:22:13.404845 | b9a80bb3-f21b-4c17-a0b1-a9b1c9b838b6 ==============================
+[0m08:22:13.404845 [info ] [MainThread]: Running with dbt=1.11.12
+[0m08:22:13.405509 [debug] [MainThread]: running dbt with arguments {'version_check': 'True', 'fail_fast': 'False', 'quiet': 'False', 'warn_error': 'None', 'no_print': 'None', 'target_path': 'None', 'log_path': 'logs', 'partial_parse': 'True', 'debug': 'False', 'log_cache_events': 'False', 'empty': 'None', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'indirect_selection': 'eager', 'log_format': 'default', 'profiles_dir': '/root/.dbt', 'cache_selected_only': 'False', 'send_anonymous_usage_stats': 'True', 'invocation_command': 'dbt debug', 'introspect': 'True', 'use_experimental_parser': 'False', 'static_parser': 'True', 'printer_width': '80', 'use_colors': 'True', 'write_json': 'True'}
+[0m08:22:13.417774 [info ] [MainThread]: dbt version: 1.11.12
+[0m08:22:13.418719 [info ] [MainThread]: python version: 3.11.15
+[0m08:22:13.419130 [info ] [MainThread]: python path: /usr/local/bin/python3.11
+[0m08:22:13.419547 [info ] [MainThread]: os info: Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.41
+[0m08:22:13.497719 [info ] [MainThread]: Using profiles dir at /root/.dbt
+[0m08:22:13.498303 [info ] [MainThread]: Using profiles.yml file at /root/.dbt/profiles.yml
+[0m08:22:13.498933 [info ] [MainThread]: Using dbt_project.yml file at /dbt/project/cbr_marts/dbt_project.yml
+[0m08:22:13.499574 [info ] [MainThread]: adapter type: clickhouse
+[0m08:22:13.499999 [info ] [MainThread]: adapter version: 1.10.1
+[0m08:22:13.500413 [info ] [MainThread]: Configuration:
+[0m08:22:13.500766 [info ] [MainThread]:   profiles.yml file [[32mOK found and valid[0m]
+[0m08:22:13.501123 [info ] [MainThread]:   dbt_project.yml file [[31mERROR not found[0m]
+[0m08:22:13.501447 [info ] [MainThread]: Required dependencies:
+[0m08:22:13.501848 [debug] [MainThread]: Executing "git --help"
+[0m08:22:13.503430 [info ] [MainThread]:  - git [[31mERROR[0m]
+
+[0m08:22:13.503936 [info ] [MainThread]: Connection:
+[0m08:22:13.504300 [info ] [MainThread]:   driver: http
+[0m08:22:13.504604 [info ] [MainThread]:   host: clickhouse
+[0m08:22:13.504910 [info ] [MainThread]:   port: 8123
+[0m08:22:13.505346 [info ] [MainThread]:   user: default
+[0m08:22:13.505671 [info ] [MainThread]:   schema: mart
+[0m08:22:13.506118 [info ] [MainThread]:   retries: 1
+[0m08:22:13.506569 [info ] [MainThread]:   cluster: None
+[0m08:22:13.507017 [info ] [MainThread]:   database_engine: None
+[0m08:22:13.507447 [info ] [MainThread]:   cluster_mode: False
+[0m08:22:13.507807 [info ] [MainThread]:   secure: False
+[0m08:22:13.508151 [info ] [MainThread]:   verify: True
+[0m08:22:13.508600 [info ] [MainThread]:   client_cert: None
+[0m08:22:13.509033 [info ] [MainThread]:   client_cert_key: None
+[0m08:22:13.509363 [info ] [MainThread]:   connect_timeout: 10
+[0m08:22:13.509687 [info ] [MainThread]:   send_receive_timeout: 300
+[0m08:22:13.510079 [info ] [MainThread]:   sync_request_timeout: 5
+[0m08:22:13.510479 [info ] [MainThread]:   compress_block_size: 1048576
+[0m08:22:13.510851 [info ] [MainThread]:   compression: 
+[0m08:22:13.511256 [info ] [MainThread]:   check_exchange: True
+[0m08:22:13.511674 [info ] [MainThread]:   custom_settings: None
+[0m08:22:13.512017 [info ] [MainThread]:   use_lw_deletes: False
+[0m08:22:13.512370 [info ] [MainThread]:   allow_automatic_deduplication: False
+[0m08:22:13.512688 [info ] [MainThread]:   tcp_keepalive: False
+[0m08:22:13.513431 [info ] [MainThread]: Registered adapter: clickhouse=1.10.1
+[0m08:22:13.636487 [debug] [MainThread]: Acquiring new clickhouse connection 'debug'
+[0m08:22:13.637176 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m08:22:13.734373 [debug] [MainThread]: dbt_clickhouse adapter: On debug: select 1 as id...
+[0m08:22:13.737459 [debug] [MainThread]: dbt_clickhouse adapter: SQL status: OK in 0.00 seconds
+[0m08:22:13.779235 [info ] [MainThread]:   Connection test: [[32mOK connection ok[0m]
+
+[0m08:22:13.779870 [info ] [MainThread]: [31m2 checks failed:[0m
+[0m08:22:13.780262 [info ] [MainThread]: Project loading failed for the following reason:
+ project path </dbt/project/cbr_marts/dbt_project.yml> not found
+
+[0m08:22:13.780608 [info ] [MainThread]: Error from git --help: Could not find command, ensure it is in the user's PATH: "git"
+
+[0m08:22:13.782938 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_success": false, "command_wall_clock_time": 0.4524955, "process_in_blocks": "7688", "process_kernel_time": 0.482549, "process_mem_max_rss": "115064", "process_out_blocks": "2240", "process_user_time": 1.818534}
+[0m08:22:13.783549 [debug] [MainThread]: Command `dbt debug` failed at 08:22:13.783440 after 0.45 seconds
+[0m08:22:13.783900 [debug] [MainThread]: Connection 'debug' was left open.
+[0m08:22:13.784233 [debug] [MainThread]: On debug: Close
+[0m08:22:13.784656 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d832dcecb90>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d832dab7210>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7d832dab5d10>]}
+[0m08:22:13.785071 [debug] [MainThread]: Flushing usage events
+[0m08:22:14.494912 [debug] [MainThread]: An error was encountered while trying to flush usage events
