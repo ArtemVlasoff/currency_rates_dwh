@@ -1,6 +1,6 @@
 from datetime import datetime
 from airflow.providers.ssh.operators.ssh import SSHOperator
-
+from airflow.providers.standard.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.sdk import dag, task
 
 @dag(
@@ -11,7 +11,7 @@ from airflow.sdk import dag, task
 )
 
 def cbr_transform_pipeline():
-    SSHOperator(
+    spark_task =  SSHOperator(
         task_id='run_spark_transform',
         ssh_conn_id='ssh_wsl_host',
         cmd_timeout=300,
@@ -23,5 +23,14 @@ def cbr_transform_pipeline():
             '{{ dag_run.conf["rate_date"] }}'
         )
     )
+
+    trigger_marts = TriggerDagRunOperator(
+        task_id='trigger__cbr_clickhouse_marts_pipeline',
+        trigger_dag_id='cbr_clickhouse_marts_pipeline',
+        conf={"rate_date": "{{ dag_run.conf['rate_date'] }}"},
+        wait_for_completion=True
+    )
+
+    spark_task >> trigger_marts
 
 cbr_transform_pipeline()

@@ -67,6 +67,7 @@
         - ./dags:/opt/airflow/dags
         - ~/.ssh/airflow_spark_key:/opt/airflow/ssh/airflow_spark_key:ro
         - ~/.ssh/known_hosts_for_airflow:/opt/airflow/ssh/known_hosts:ro
+        - /var/run/docker.sock:/var/run/docker.sock
       extra_hosts:
         - "host.docker.internal:host-gateway"
       command:
@@ -97,11 +98,14 @@
         - ./dags:/opt/airflow/dags
         - ~/.ssh/airflow_spark_key:/opt/airflow/ssh/airflow_spark_key:ro
         - ~/.ssh/known_hosts_for_airflow:/opt/airflow/ssh/known_hosts:ro
+        - /var/run/docker.sock:/var/run/docker.sock
       extra_hosts:
         - "host.docker.internal:host-gateway"
       command: scheduler
       networks:
         - pipeline-net
+      group_add:
+        - "999"
 
     airflow-dag-processor:
       build:

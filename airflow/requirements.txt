@@ -4,3 +4,5 @@ apache-airflow-providers-amazon
 apache-airflow-providers-ssh
 xmltodict
 airflow-clickhouse-plugin
+docker
+apache-airflow-providers-docker
